@@ -1,0 +1,21 @@
+{
+  "name": "mars-rover-kata",
+  "version": "1.0.0",
+  "description": "A robust implementation of the Mars Rover Kata using Test-Driven Development (TDD) and Hexagonal Architecture (Ports & Adapters). This project focuses on high maintainability, separation of concerns, and domain-driven design principles to navigate a rover through a grid-based terrain via remote commands.",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage"
+  },
+  "author": "Sebastián Bello",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "4.1.2",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
