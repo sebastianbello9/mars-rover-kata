@@ -11,6 +11,10 @@ export class RoverCommandService implements CommandInterpreter {
     R: () => this.rover.turn("R"),
   };
 
+  isKnown(command: string): boolean {
+    return command in this.commands;
+  }
+
   interpret(command: string): void {
     this.commands[command]?.();
   }

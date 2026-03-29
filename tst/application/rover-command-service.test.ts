@@ -43,4 +43,23 @@ describe("RoverCommandService", () => {
     service.interpret("B");
     expect(rover.getPosition()).toEqual({ x: 0, y: -1, direction: "N" });
   });
+
+  describe("isKnown", () => {
+    it("should return true for all valid commands", () => {
+      const service = new RoverCommandService(new Rover(0, 0, "N"));
+
+      expect(service.isKnown("F")).toBe(true);
+      expect(service.isKnown("B")).toBe(true);
+      expect(service.isKnown("L")).toBe(true);
+      expect(service.isKnown("R")).toBe(true);
+    });
+
+    it("should return false for unknown commands", () => {
+      const service = new RoverCommandService(new Rover(0, 0, "N"));
+
+      expect(service.isKnown("X")).toBe(false);
+      expect(service.isKnown("")).toBe(false);
+      expect(service.isKnown(" ")).toBe(false);
+    });
+  });
 });
