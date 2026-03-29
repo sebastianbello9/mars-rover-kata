@@ -4,9 +4,9 @@ import { fileURLToPath } from "url";
 
 export default defineConfig({
   resolve: {
-    alias: {
-      "@src": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    alias: [
+      { find: /^#src\//, replacement: fileURLToPath(new URL("./src/", import.meta.url)) },
+    ],
   },
   test: {
     globals: true,
