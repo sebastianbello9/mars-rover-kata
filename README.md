@@ -1,116 +1,114 @@
 # Mars Rover Kata
 
-A robust implementation of the **Mars Rover Kata** using Test-Driven Development (TDD) and **Hexagonal Architecture** (Ports & Adapters). The project focuses on high maintainability, separation of concerns, and domain-driven design principles to navigate a rover through a grid-based terrain via remote commands.
+> A TypeScript implementation of the Mars Rover Kata built with **Test-Driven Development** and **Hexagonal Architecture** (Ports & Adapters).
+
+A squad of robotic rovers has been landed on a plateau on Mars. Each rover receives a sequence of commands to navigate a grid, rotating in cardinal directions and moving step by step.
 
 ---
 
-## Problem Description
+## Commands
 
-A squad of robotic rovers has been landed on a plateau on Mars. The plateau is divided into a grid to simplify navigation. A rover's position and heading are represented by a combination of x/y coordinates and a cardinal direction (N, S, E, W).
+| Command | Action | Status |
+|---------|--------|--------|
+| `F` | Move forward one step | Implemented |
+| `B` | Move backward one step | Implemented |
+| `L` | Rotate 90° counter-clockwise | Implemented |
+| `R` | Rotate 90° clockwise | Implemented |
 
-Rovers receive a string of commands and must:
+Directions cycle as: `N` → `E` → `S` → `W` → `N` (rotating right).
 
-- Move forward/backward across the grid
-- Rotate left or right in 90-degree increments
-- Detect and report obstacles before moving into them
-- Wrap around the edges of the grid (toroidal surface)
-
-### Commands
-
-| Command | Action |
-|---------|--------|
-| `F` | Move forward one grid point |
-| `B` | Move backward one grid point |
-| `L` | Rotate 90° left (counter-clockwise) |
-| `R` | Rotate 90° right (clockwise) |
-
-### Cardinal Directions
-
-`N` → `E` → `S` → `W` → `N` (rotating right)
+> [!NOTE]
+> Movement is direction-aware: `F`/`B` apply a delta based on the current facing direction (`N` → y+1, `S` → y−1, `E` → x+1, `W` → x−1). When the rover hits a grid edge it **rebounds**: it stays at the boundary and reverses direction. Planned feature: **obstacle detection**.
 
 ---
 
 ## Architecture
 
-This project follows **Hexagonal Architecture** (also known as Ports & Adapters), keeping the domain logic fully isolated from infrastructure concerns.
+The project follows **Hexagonal Architecture** — the domain core is fully isolated from infrastructure concerns. Dependencies always point inward.
 
 ```
 src/
-├── domain/                   # Core business logic — no external dependencies
-│   ├── rover/                # Rover entity, position, and direction
-│   ├── grid/                 # Grid boundaries and wrapping logic
-│   └── obstacle-detector/    # Obstacle detection port
-├── application/              # Use cases and command handlers
-│   └── move-rover/           # Command dispatching and sequencing
-└── infrastructure/           # Adapters (CLI, file input, etc.)
-    └── command-parser/       # Parses raw input into domain commands
+├── domain/
+│   ├── rover.ts                          # Rover entity — position and movement
+│   └── ports/
+│       └── command-interpreter.ts        # Driving port (inbound interface)
+├── application/
+│   └── rover-command-service.ts          # Implements the port, orchestrates the Rover
+├── infrastructure/
+│   └── command-interpreter/
+│       └── terminal-command-interpreter.ts  # Adapter — parses sequences, drives the port
+└── index.ts                              # Composition root — wires all layers
 ```
 
-> The `src/index.ts` entry point wires up the application.
+### Layer responsibilities
 
-### Key Design Principles
+**Domain** — pure business logic with zero external dependencies. The `Rover` entity owns position (`x`, `y`) and direction (`N`/`E`/`S`/`W`) state. `CommandInterpreter` is the driving port: it defines what the outside world can ask the core to do.
 
-- **Domain-Driven Design**: the rover, grid, and obstacle detection are modeled as first-class domain concepts
-- **Ports & Adapters**: the domain exposes interfaces (ports); infrastructure code implements them (adapters)
-- **TDD**: every behavior is driven by tests written first
+**Application** — `RoverCommandService` implements `CommandInterpreter` and is the only place that orchestrates domain logic. It depends on the domain layer only.
 
----
+**Infrastructure** — `TerminalCommandInterpreter` is a driving adapter. It accepts a raw command sequence (e.g. `"FFL"`), iterates each character, and calls `CommandInterpreter.interpret()` for each one. It depends on the port interface, never on the domain entity directly.
 
-## Getting Started
+**Composition root** — `src/index.ts` is the only place allowed to know about all three layers simultaneously. It instantiates and wires the object graph.
 
-### Prerequisites
+### Dependency rule
 
-- Node.js >= 18
-- Yarn >= 1.22
-
-### Install
-
-```bash
-yarn install
+```
+TerminalCommandInterpreter
+        │  depends on (interface only)
+        ▼
+CommandInterpreter  ◄──  RoverCommandService
+     (port)                    │  depends on
+                               ▼
+                             Rover
 ```
 
-### Build
-
-```bash
-yarn build
-```
-
-Compiled output is written to `dist/`.
-
-### Run
-
-```bash
-yarn start
-```
+> [!IMPORTANT]
+> Infrastructure imports from `domain/ports` only — never from `application` or from domain concretions. This makes every adapter swappable without touching the domain or application layers.
 
 ---
 
 ## Testing
 
-This project uses [Vitest](https://vitest.dev/) for unit and integration testing.
+Tests mirror the source structure and are kept layer-isolated: domain tests never touch infrastructure, and adapter tests run against a mock port.
 
 ```bash
+# Run tests once with coverage report
+yarn test:cov
+
 # Run tests in watch mode
 yarn test
 
-# Run tests with coverage report
-yarn test:cov
+# Run a single test file
+yarn vitest run tst/domain/rover.test.ts
 ```
 
-Coverage is provided by `@vitest/coverage-v8`.
+| Test file | What it covers |
+|-----------|----------------|
+| `tst/domain/rover.test.ts` | `Rover` entity in isolation |
+| `tst/application/rover-command-service.test.ts` | App service satisfies the `CommandInterpreter` port |
+| `tst/infrastructure/.../terminal-command-interpreter.test.ts` | Adapter sequence parsing against a mock port |
+
+> [!TIP]
+> Because the application service and adapter depend on interfaces, every test can use plain `vi.fn()` mocks — no real infrastructure required.
+
+---
+
+## Getting Started
+
+**Prerequisites:** Node.js >= 22, Yarn >= 1.22
+
+```bash
+yarn install
+yarn build   # compile TypeScript to dist/
+yarn start   # run compiled output
+```
 
 ---
 
 ## Tech Stack
 
-| Tool | Purpose |
-|------|---------|
-| TypeScript | Primary language |
-| Vitest | Test runner and coverage |
-| Node.js ESM | Module system (`"type": "module"`) |
-
----
-
-## License
-
-MIT — Sebastián Bello
+| | Purpose |
+|---|---|
+| TypeScript | Primary language, strict ESM (`"type": "module"`) |
+| Vitest | Test runner and coverage (`@vitest/coverage-v8`) |
+| Node.js | Runtime with native ESM module resolution |
