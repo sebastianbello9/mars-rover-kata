@@ -18,7 +18,7 @@ A squad of robotic rovers has been landed on a plateau on Mars. Each rover recei
 Directions cycle as: `N` → `E` → `S` → `W` → `N` (rotating right).
 
 > [!NOTE]
-> Movement is direction-aware: `F`/`B` apply a delta based on the current facing direction (`N` → y+1, `S` → y−1, `E` → x+1, `W` → x−1). Planned features: **toroidal wrapping** and **obstacle detection**.
+> Movement is direction-aware: `F`/`B` apply a delta based on the current facing direction (`N` → y+1, `S` → y−1, `E` → x+1, `W` → x−1). When the rover hits a grid edge it **rebounds**: it stays at the boundary and reverses direction. Planned feature: **obstacle detection**.
 
 ---
 

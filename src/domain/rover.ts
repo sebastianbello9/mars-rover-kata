@@ -1,9 +1,16 @@
+import type { Terrain } from "@src/domain/ports/terrain.js";
+
 export class Rover {
   private x: number;
   private y: number;
   private direction: "N" | "E" | "S" | "W";
 
-  constructor(x: number, y: number, direction: "N" | "E" | "S" | "W") {
+  constructor(
+    x: number,
+    y: number,
+    direction: "N" | "E" | "S" | "W",
+    private readonly terrain?: Terrain
+  ) {
     this.x = x;
     this.y = y;
     this.direction = direction;
@@ -19,8 +26,18 @@ export class Rover {
   move(command: "F" | "B") {
     const step = command === "F" ? 1 : -1;
     const { dx, dy } = Rover.DELTAS[this.direction];
-    this.x += dx * step;
-    this.y += dy * step;
+    const newX = this.x + dx * step;
+    const newY = this.y + dy * step;
+
+    if (this.terrain) {
+      const result = this.terrain.rebound(newX, newY, this.direction);
+      this.x = result.x;
+      this.y = result.y;
+      this.direction = result.direction;
+    } else {
+      this.x = newX;
+      this.y = newY;
+    }
   }
 
   turn(command: "L" | "R") {

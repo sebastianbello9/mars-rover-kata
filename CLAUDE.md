@@ -40,8 +40,9 @@ Implemented commands:
 - `B` — move backward one step (same `DELTAS` map, step multiplied by `-1`)
 - `L` / `R` — rotate 90° counter-clockwise / clockwise
 
+- Rebounding — hitting a grid edge keeps the rover at the boundary and reverses its direction
+
 Planned (not yet implemented):
-- Toroidal wrapping — grid edges wrap around (e.g., moving past the top returns at the bottom)
 - Obstacle detection — halt the sequence and report the blocker's position
 
 ## Available Skills
