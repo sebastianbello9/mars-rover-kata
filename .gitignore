@@ -3,3 +3,6 @@
 
 # vitest
 /coverage
+
+# claude symlinks
+.claude/
