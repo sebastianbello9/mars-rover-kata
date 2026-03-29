@@ -2,23 +2,23 @@
 
 > A TypeScript implementation of the Mars Rover Kata built with **Test-Driven Development** and **Hexagonal Architecture** (Ports & Adapters).
 
-A squad of robotic rovers has been landed on a plateau on Mars. Each rover receives a sequence of commands and must navigate a toroidal grid — wrapping around edges, rotating in cardinal directions, and halting when an obstacle is detected.
+A squad of robotic rovers has been landed on a plateau on Mars. Each rover receives a sequence of commands to navigate a grid, rotating in cardinal directions and moving step by step.
 
 ---
 
 ## Commands
 
-| Command | Action |
-|---------|--------|
-| `F` | Move forward one step |
-| `B` | Move backward one step |
-| `L` | Rotate 90° counter-clockwise |
-| `R` | Rotate 90° clockwise |
+| Command | Action | Status |
+|---------|--------|--------|
+| `F` | Move forward one step | Implemented |
+| `B` | Move backward one step | Planned |
+| `L` | Rotate 90° counter-clockwise | Implemented |
+| `R` | Rotate 90° clockwise | Implemented |
 
 Directions cycle as: `N` → `E` → `S` → `W` → `N` (rotating right).
 
 > [!NOTE]
-> The grid uses **toroidal wrapping**: moving past an edge returns the rover at the opposite side.
+> Planned features: **toroidal wrapping** (moving past an edge returns the rover at the opposite side) and **obstacle detection** (halt the sequence and report the blocker's position).
 
 ---
 

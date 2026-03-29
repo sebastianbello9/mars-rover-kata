@@ -4,9 +4,13 @@ import type { CommandInterpreter } from "@src/domain/ports/command-interpreter.j
 export class RoverCommandService implements CommandInterpreter {
   constructor(private readonly rover: Rover) {}
 
+  private readonly commands: Record<string, () => void> = {
+    F: () => this.rover.move("F"),
+    L: () => this.rover.turn("L"),
+    R: () => this.rover.turn("R"),
+  };
+
   interpret(command: string): void {
-    if (command === "F") {
-      this.rover.move("F");
-    }
+    this.commands[command]?.();
   }
 }

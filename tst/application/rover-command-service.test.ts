@@ -21,4 +21,18 @@ describe("RoverCommandService", () => {
 
     expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "N" });
   });
+
+  it("should turn left and right correctly", () => {
+    const rover = new Rover(0, 0, "N");
+    const service: CommandInterpreter = new RoverCommandService(rover);
+
+    service.interpret("L");
+    expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "W" });
+
+    service.interpret("R");
+    expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "N" });
+
+    service.interpret("R");
+    expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "E" });
+  });
 });

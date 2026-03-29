@@ -13,6 +13,13 @@ export class Rover {
     this.y += 1;
   }
 
+  turn(command: "L" | "R") {
+    const clockwise: ("N" | "E" | "S" | "W")[] = ["N", "E", "S", "W"];
+    const step = command === "R" ? 1 : -1;
+    const currentIndex = clockwise.indexOf(this.direction);
+    this.direction = clockwise[(currentIndex + step + 4) % 4];
+  }
+
   getPosition() {
     return { x: this.x, y: this.y, direction: this.direction };
   }

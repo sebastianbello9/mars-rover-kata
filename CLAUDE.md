@@ -35,11 +35,14 @@ Import paths use the `@src/` alias (mapped to `src/`) and require the `.js` exte
 
 ## Domain Rules
 
-The rover navigates a toroidal (wrapping) grid:
-- Commands: `F` (forward), `B` (backward), `L` (rotate left), `R` (rotate right)
-- Forward/backward movement depends on the current facing direction
-- Grid edges wrap around (e.g., moving past the top returns at the bottom)
-- Obstacle detection should halt the sequence and report the blocker's position
+Implemented commands:
+- `F` — move forward one step (direction-aware movement not yet implemented; currently always increments `y`)
+- `L` / `R` — rotate 90° counter-clockwise / clockwise
+
+Planned (not yet implemented):
+- `B` — move backward one step
+- Toroidal wrapping — grid edges wrap around (e.g., moving past the top returns at the bottom)
+- Obstacle detection — halt the sequence and report the blocker's position
 
 ## Available Skills
 
