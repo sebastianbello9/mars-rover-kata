@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { Rover } from "@src/domain/rover.js";
-import type { Terrain } from "@src/domain/ports/terrain.js";
+import { Rover } from "#src/domain/rover.js";
+import type { Terrain } from "#src/domain/ports/terrain.js";
 
 describe("Rover", () => {
   it("should move forward when facing North", () => {

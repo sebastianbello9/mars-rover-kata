@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { Rover } from "@src/domain/rover.js";
-import { RoverCommandService } from "@src/application/rover-command-service.js";
-import type { CommandInterpreter } from "@src/domain/ports/command-interpreter.js";
+import { Rover } from "#src/domain/rover.js";
+import { RoverCommandService } from "#src/application/rover-command-service.js";
+import type { CommandInterpreter } from "#src/domain/ports/command-interpreter.js";
 
 describe("RoverCommandService", () => {
   it("should satisfy the CommandInterpreter port", () => {

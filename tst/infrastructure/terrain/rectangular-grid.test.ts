@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Grid } from "@src/infrastructure/terrain/grid.js";
+import { Grid } from "#src/infrastructure/terrain/grid.js";
 
 describe("Grid", () => {
   it("should return position and direction unchanged when within bounds", () => {

@@ -1,8 +1,8 @@
-import { Rover } from "@src/domain/rover.js";
-import { RoverCommandService } from "@src/application/rover-command-service.js";
-import { Grid } from "@src/infrastructure/terrain/grid.js";
-import { TerminalCommandInterpreter } from "@src/infrastructure/command-interpreter/terminal-command-interpreter.js";
-import { TerminalPositionReporter } from "@src/infrastructure/position-reporter/terminal-position-reporter.js";
+import { Rover } from "#src/domain/rover.js";
+import { RoverCommandService } from "#src/application/rover-command-service.js";
+import { Grid } from "#src/infrastructure/terrain/grid.js";
+import { TerminalCommandInterpreter } from "#src/infrastructure/command-interpreter/terminal-command-interpreter.js";
+import { TerminalPositionReporter } from "#src/infrastructure/position-reporter/terminal-position-reporter.js";
 
 const commandSequence = process.argv[2] ?? "";
 

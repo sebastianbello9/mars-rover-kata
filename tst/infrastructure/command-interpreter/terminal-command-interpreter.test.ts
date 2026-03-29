@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { TerminalCommandInterpreter } from "@src/infrastructure/command-interpreter/terminal-command-interpreter.js";
-import type { CommandInterpreter } from "@src/domain/ports/command-interpreter.js";
+import { TerminalCommandInterpreter } from "#src/infrastructure/command-interpreter/terminal-command-interpreter.js";
+import type { CommandInterpreter } from "#src/domain/ports/command-interpreter.js";
 
 function mockInterpreter(known = true): CommandInterpreter {
   return {

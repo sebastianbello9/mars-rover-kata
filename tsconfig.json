@@ -4,12 +4,9 @@
         "moduleResolution": "nodenext",
         "target": "esnext",
         "sourceMap": true,
+        "types": ["node"],
         "rootDir": ".",
         "outDir": "dist",
-        "baseUrl": ".",
-        "paths": {
-            "@src/*": ["src/*"]
-        }
     },
     "include": ["src/**/*", "tst/**/*"],
     "exclude": [

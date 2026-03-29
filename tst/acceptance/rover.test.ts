@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { Rover } from "@src/domain/rover.js";
-import { RoverCommandService } from "@src/application/rover-command-service.js";
-import { TerminalCommandInterpreter } from "@src/infrastructure/command-interpreter/terminal-command-interpreter.js";
-import { Grid } from "@src/infrastructure/terrain/grid.js";
+import { Rover } from "#src/domain/rover.js";
+import { RoverCommandService } from "#src/application/rover-command-service.js";
+import { TerminalCommandInterpreter } from "#src/infrastructure/command-interpreter/terminal-command-interpreter.js";
+import { Grid } from "#src/infrastructure/terrain/grid.js";
 
 function buildRover(x: number, y: number, direction: "N" | "E" | "S" | "W", width = 10, height = 10) {
   const terrain = new Grid(width, height);

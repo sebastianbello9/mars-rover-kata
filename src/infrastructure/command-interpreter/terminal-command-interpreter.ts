@@ -1,4 +1,4 @@
-import type { CommandInterpreter } from "@src/domain/ports/command-interpreter.js";
+import type { CommandInterpreter } from "#src/domain/ports/command-interpreter.js";
 
 export class TerminalCommandInterpreter {
   constructor(private readonly commandInterpreter: CommandInterpreter) {}

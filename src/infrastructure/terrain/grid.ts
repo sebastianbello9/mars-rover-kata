@@ -1,4 +1,4 @@
-import type { Terrain } from "@src/domain/ports/terrain.js";
+import type { Terrain } from "#src/domain/ports/terrain.js";
 
 export class Grid implements Terrain {
   constructor(
