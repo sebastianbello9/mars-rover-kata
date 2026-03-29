@@ -6,6 +6,7 @@ export class RoverCommandService implements CommandInterpreter {
 
   private readonly commands: Record<string, () => void> = {
     F: () => this.rover.move("F"),
+    B: () => this.rover.move("B"),
     L: () => this.rover.turn("L"),
     R: () => this.rover.turn("R"),
   };

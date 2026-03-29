@@ -36,11 +36,11 @@ Import paths use the `@src/` alias (mapped to `src/`) and require the `.js` exte
 ## Domain Rules
 
 Implemented commands:
-- `F` — move forward one step (direction-aware movement not yet implemented; currently always increments `y`)
+- `F` — move forward one step (direction-aware; uses a `DELTAS` map keyed by `N`/`E`/`S`/`W`)
+- `B` — move backward one step (same `DELTAS` map, step multiplied by `-1`)
 - `L` / `R` — rotate 90° counter-clockwise / clockwise
 
 Planned (not yet implemented):
-- `B` — move backward one step
 - Toroidal wrapping — grid edges wrap around (e.g., moving past the top returns at the bottom)
 - Obstacle detection — halt the sequence and report the blocker's position
 

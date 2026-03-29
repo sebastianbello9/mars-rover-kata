@@ -9,8 +9,18 @@ export class Rover {
     this.direction = direction;
   }
 
-  move(command: "F") {
-    this.y += 1;
+  private static readonly DELTAS: Record<"N" | "E" | "S" | "W", { dx: number; dy: number }> = {
+    N: { dx: 0, dy: 1 },
+    E: { dx: 1, dy: 0 },
+    S: { dx: 0, dy: -1 },
+    W: { dx: -1, dy: 0 },
+  };
+
+  move(command: "F" | "B") {
+    const step = command === "F" ? 1 : -1;
+    const { dx, dy } = Rover.DELTAS[this.direction];
+    this.x += dx * step;
+    this.y += dy * step;
   }
 
   turn(command: "L" | "R") {

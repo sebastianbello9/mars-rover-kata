@@ -17,4 +17,12 @@ describe("Rover", () => {
 
     expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "E" });
   });
+
+  it("should move backward when facing South", () => {
+    const rover = new Rover(0, 0, "S");
+
+    rover.move("B");
+
+    expect(rover.getPosition()).toEqual({ x: 0, y: 1, direction: "S" });
+  });
 });

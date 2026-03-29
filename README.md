@@ -11,14 +11,14 @@ A squad of robotic rovers has been landed on a plateau on Mars. Each rover recei
 | Command | Action | Status |
 |---------|--------|--------|
 | `F` | Move forward one step | Implemented |
-| `B` | Move backward one step | Planned |
+| `B` | Move backward one step | Implemented |
 | `L` | Rotate 90° counter-clockwise | Implemented |
 | `R` | Rotate 90° clockwise | Implemented |
 
 Directions cycle as: `N` → `E` → `S` → `W` → `N` (rotating right).
 
 > [!NOTE]
-> Planned features: **toroidal wrapping** (moving past an edge returns the rover at the opposite side) and **obstacle detection** (halt the sequence and report the blocker's position).
+> Movement is direction-aware: `F`/`B` apply a delta based on the current facing direction (`N` → y+1, `S` → y−1, `E` → x+1, `W` → x−1). Planned features: **toroidal wrapping** and **obstacle detection**.
 
 ---
 

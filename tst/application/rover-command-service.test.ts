@@ -35,4 +35,12 @@ describe("RoverCommandService", () => {
     service.interpret("R");
     expect(rover.getPosition()).toEqual({ x: 0, y: 0, direction: "E" });
   });
+
+  it("should move backward correctly", () => {
+    const rover = new Rover(0, 0, "N");
+    const service: CommandInterpreter = new RoverCommandService(rover);
+
+    service.interpret("B");
+    expect(rover.getPosition()).toEqual({ x: 0, y: -1, direction: "N" });
+  });
 });
