@@ -1,4 +1,5 @@
 export interface Terrain {
+  hasObstacle(x: number, y: number): boolean;
   rebound(
     x: number,
     y: number,
