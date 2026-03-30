@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { Rover } from "#src/domain/rover.js";
+import { ObstacleError } from "#src/domain/obstacle-error.js";
 import type { Terrain } from "#src/domain/ports/terrain.js";
 
 describe("Rover", () => {
@@ -29,7 +30,10 @@ describe("Rover", () => {
 
   describe("with terrain", () => {
     it("should use the position and direction returned by terrain.rebound", () => {
-      const terrain: Terrain = { rebound: vi.fn().mockReturnValue({ x: 0, y: 9, direction: "S" }) };
+      const terrain: Terrain = {
+        hasObstacle: vi.fn().mockReturnValue(false),
+        rebound: vi.fn().mockReturnValue({ x: 0, y: 9, direction: "S" }),
+      };
       const rover = new Rover(0, 0, "N", terrain);
 
       rover.move("F");
@@ -38,12 +42,46 @@ describe("Rover", () => {
     });
 
     it("should pass the next position and current direction to terrain.rebound", () => {
-      const terrain: Terrain = { rebound: vi.fn().mockReturnValue({ x: 0, y: 1, direction: "N" }) };
+      const terrain: Terrain = {
+        hasObstacle: vi.fn().mockReturnValue(false),
+        rebound: vi.fn().mockReturnValue({ x: 0, y: 1, direction: "N" }),
+      };
       const rover = new Rover(0, 0, "N", terrain);
 
       rover.move("F");
 
       expect(terrain.rebound).toHaveBeenCalledWith(0, 1, "N");
+    });
+
+    it("should throw ObstacleError when an obstacle is at the next position", () => {
+      const terrain: Terrain = {
+        hasObstacle: vi.fn().mockReturnValue(true),
+        rebound: vi.fn(),
+      };
+      const rover = new Rover(0, 0, "N", terrain);
+
+      expect(() => rover.move("F")).toThrow(ObstacleError);
+    });
+
+    it("should include the obstacle position in the error", () => {
+      const terrain: Terrain = {
+        hasObstacle: vi.fn().mockReturnValue(true),
+        rebound: vi.fn(),
+      };
+      const rover = new Rover(0, 0, "N", terrain);
+
+      expect(() => rover.move("F")).toThrow("Obstacle detected at 0:1");
+    });
+
+    it("should not call terrain.rebound when an obstacle is detected", () => {
+      const terrain: Terrain = {
+        hasObstacle: vi.fn().mockReturnValue(true),
+        rebound: vi.fn(),
+      };
+      const rover = new Rover(0, 0, "N", terrain);
+
+      expect(() => rover.move("F")).toThrow();
+      expect(terrain.rebound).not.toHaveBeenCalled();
     });
   });
 });

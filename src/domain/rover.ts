@@ -1,4 +1,5 @@
 import type { Terrain } from "#src/domain/ports/terrain.js";
+import { ObstacleError } from "#src/domain/obstacle-error.js";
 
 export class Rover {
   private x: number;
@@ -30,6 +31,9 @@ export class Rover {
     const newY = this.y + dy * step;
 
     if (this.terrain) {
+      if (this.terrain.hasObstacle(newX, newY)) {
+        throw new ObstacleError(newX, newY);
+      }
       const result = this.terrain.rebound(newX, newY, this.direction);
       this.x = result.x;
       this.y = result.y;

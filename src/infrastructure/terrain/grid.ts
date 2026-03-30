@@ -1,10 +1,23 @@
 import type { Terrain } from "#src/domain/ports/terrain.js";
 
 export class Grid implements Terrain {
+  private readonly obstacles: Set<string>;
+
   constructor(
     private readonly width: number,
     private readonly height: number,
-  ) {}
+    obstacles: { x: number; y: number }[] = []
+  ) {
+    const invalid = obstacles.filter(({ x, y }) => x < 0 || x >= width || y < 0 || y >= height);
+    if (invalid.length > 0) {
+      throw new Error(`Obstacles out of bounds: ${invalid.map(({ x, y }) => `${x}:${y}`).join(", ")}`);
+    }
+    this.obstacles = new Set(obstacles.map(({ x, y }) => `${x}:${y}`));
+  }
+
+  hasObstacle(x: number, y: number): boolean {
+    return this.obstacles.has(`${x}:${y}`);
+  }
 
   private static readonly OPPOSITE = { N: "S", S: "N", E: "W", W: "E" } as const;
 
