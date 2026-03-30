@@ -21,11 +21,17 @@ yarn vitest run tst/domain/rover.test.ts
 This project implements the Mars Rover Kata using **Hexagonal Architecture (Ports & Adapters)**:
 
 - **`src/domain/`** — Pure business logic. The `Rover` entity owns position (`x`, `y`) and direction (`N`/`E`/`S`/`W`) state. No infrastructure dependencies.
-- **`src/domain/ports/`** — Driving ports (inbound interfaces). `CommandInterpreter` lives here — not in infrastructure.
+- **`src/domain/obstacle-error.ts`** — Domain error thrown when the rover encounters an obstacle; carries the blocker's `x`/`y` coordinates.
+- **`src/domain/ports/`** — Port interfaces:
+  - `command-interpreter.ts` — Driving port (inbound); defines `interpret()` and `isKnown()`.
+  - `terrain.ts` — Driven port; defines `hasObstacle()` and `rebound()`.
+  - `position-reporter.ts` — Driven port; defines `report()`.
 - **`src/application/`** — `RoverCommandService` implements `CommandInterpreter` and orchestrates the `Rover` entity. Only depends on the domain layer.
-- **`src/infrastructure/command-interpreter/`** — `TerminalCommandInterpreter` is the driving adapter. It accepts a raw sequence string (e.g. `"FFL"`), iterates each character, and calls `CommandInterpreter.interpret()` per command. Depends on the port interface only — never on domain concretions.
+- **`src/infrastructure/command-interpreter/`** — `TerminalCommandInterpreter` is the driving adapter. It validates the full sequence for unknown commands before executing, then calls `CommandInterpreter.interpret()` per character.
+- **`src/infrastructure/terrain/`** — `Grid` implements `Terrain`. Validates obstacles are within bounds on construction; `rebound()` clamps to grid edges and flips direction.
+- **`src/infrastructure/position-reporter/`** — `TerminalPositionReporter` implements `PositionReporter`; prints `x:y:direction` to stdout.
 - **`src/index.ts`** — Composition root. The only place that instantiates and wires all three layers together.
-- **`tst/`** — Mirrors `src/` structure. Each layer is tested in isolation (domain tests have no infrastructure imports; adapter tests use `vi.fn()` mocks).
+- **`tst/`** — Mirrors `src/` structure. Each layer is tested in isolation; acceptance tests in `tst/acceptance/` cover full end-to-end scenarios.
 
 ### Dependency rule
 
@@ -40,10 +46,13 @@ Implemented commands:
 - `B` — move backward one step (same `DELTAS` map, step multiplied by `-1`)
 - `L` / `R` — rotate 90° counter-clockwise / clockwise
 
-- Rebounding — hitting a grid edge keeps the rover at the boundary and reverses its direction
+Implemented behaviors:
+- **Rebounding** — hitting a grid edge keeps the rover at the boundary and reverses its direction.
+- **Obstacle detection** — when the target cell is occupied, movement halts and `ObstacleError` is thrown with the blocker's coordinates.
 
-Planned (not yet implemented):
-- Obstacle detection — halt the sequence and report the blocker's position
+## References
+
+- [Notion docs](https://www.notion.so/Mars-Rover-333ed7e47ac580c3bcf8cadfdb5f6fce) — full project documentation mirroring the README.
 
 ## Available Skills
 
@@ -51,3 +60,4 @@ Skills are located in `.agents/skills/` and provide reusable guidance for common
 
 - **`architecture-patterns`** — Implement Clean Architecture, Hexagonal Architecture, and DDD patterns. Use when designing layers, debugging dependency cycles, or implementing aggregates and value objects.
 - **`create-readme`** — Write comprehensive, well-structured README files following open source best practices.
+- **`notion`** — Use the Notion API to create, read, and update pages, databases, and blocks. Use when syncing docs to the Notion workspace.
