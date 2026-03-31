@@ -61,3 +61,4 @@ Skills are located in `.agents/skills/` and provide reusable guidance for common
 - **`architecture-patterns`** — Implement Clean Architecture, Hexagonal Architecture, and DDD patterns. Use when designing layers, debugging dependency cycles, or implementing aggregates and value objects.
 - **`create-readme`** — Write comprehensive, well-structured README files following open source best practices.
 - **`notion`** — Use the Notion API to create, read, and update pages, databases, and blocks. Use when syncing docs to the Notion workspace.
+- **`github-actions-docs`** — Ground GitHub Actions answers in official docs. Use when writing, enhancing, or troubleshooting workflow YAML, triggers, runners, secrets, caching, artifacts, or security hardening.
