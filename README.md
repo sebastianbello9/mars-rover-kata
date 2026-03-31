@@ -4,18 +4,19 @@
 
 A squad of robotic rovers has been landed on a plateau on Mars. Each rover receives a sequence of commands to navigate a grid, rotating in cardinal directions and moving step by step — stopping if it encounters an obstacle.
 
-📄 [Notion docs](https://www.notion.so/Mars-Rover-333ed7e47ac580c3bcf8cadfdb5f6fce)
+> [!NOTE]
+> See the [Notion documentation](https://www.notion.so/Mars-Rover-333ed7e47ac580c3bcf8cadfdb5f6fce) for the complete project specifications.
 
 ---
 
 ## Commands
 
-| Command | Action |
-|---------|--------|
-| `F` | Move forward one step |
-| `B` | Move backward one step |
-| `L` | Rotate 90° counter-clockwise |
-| `R` | Rotate 90° clockwise |
+| Command | Action                       |
+| ------- | ---------------------------- |
+| `F`     | Move forward one step        |
+| `B`     | Move backward one step       |
+| `L`     | Rotate 90° counter-clockwise |
+| `R`     | Rotate 90° clockwise         |
 
 Directions cycle as: `N` → `E` → `S` → `W` → `N` (rotating right).
 
@@ -70,6 +71,7 @@ src/
 **Application** — `RoverCommandService` implements `CommandInterpreter` and is the only place that orchestrates domain logic. It depends on the domain layer only.
 
 **Infrastructure** — three adapters plug into the ports:
+
 - `TerminalCommandInterpreter` — validates a raw sequence (e.g. `"FFRFF"`), then calls `CommandInterpreter.interpret()` per character.
 - `Grid` — implements `Terrain`; tracks obstacles and clamps positions to grid edges.
 - `TerminalPositionReporter` — implements `PositionReporter`; prints `x:y:direction` to stdout.
@@ -113,13 +115,13 @@ yarn test:cov
 yarn vitest run tst/domain/rover.test.ts
 ```
 
-| Test file | What it covers |
-|-----------|----------------|
-| `tst/domain/rover.test.ts` | `Rover` entity in isolation — movement, rotation, terrain interaction |
-| `tst/application/rover-command-service.test.ts` | App service satisfies the `CommandInterpreter` port |
-| `tst/infrastructure/command-interpreter/terminal-command-interpreter.test.ts` | Sequence parsing and unknown command validation |
-| `tst/infrastructure/terrain/rectangular-grid.test.ts` | Grid obstacle registry and edge rebounding |
-| `tst/acceptance/rover.test.ts` | End-to-end scenarios against the fully wired system |
+| Test file                                                                     | What it covers                                                        |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `tst/domain/rover.test.ts`                                                    | `Rover` entity in isolation — movement, rotation, terrain interaction |
+| `tst/application/rover-command-service.test.ts`                               | App service satisfies the `CommandInterpreter` port                   |
+| `tst/infrastructure/command-interpreter/terminal-command-interpreter.test.ts` | Sequence parsing and unknown command validation                       |
+| `tst/infrastructure/terrain/rectangular-grid.test.ts`                         | Grid obstacle registry and edge rebounding                            |
+| `tst/acceptance/rover.test.ts`                                                | End-to-end scenarios against the fully wired system                   |
 
 > [!TIP]
 > Because the application service and adapters depend on interfaces, every unit test can use plain `vi.fn()` mocks — no real infrastructure required.
@@ -128,8 +130,8 @@ yarn vitest run tst/domain/rover.test.ts
 
 ## Tech Stack
 
-| | Purpose |
-|---|---|
+|            | Purpose                                           |
+| ---------- | ------------------------------------------------- |
 | TypeScript | Primary language, strict ESM (`"type": "module"`) |
-| Vitest | Test runner and coverage (`@vitest/coverage-v8`) |
-| Node.js | Runtime with native ESM module resolution |
+| Vitest     | Test runner and coverage (`@vitest/coverage-v8`)  |
+| Node.js    | Runtime with native ESM module resolution         |
