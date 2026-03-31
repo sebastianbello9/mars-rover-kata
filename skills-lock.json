@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "d0ece1b2164ce1376e4ab6e98d6ac079df3a2a94f5f02224362b6a1ce2516ae9"
     },
+    "github-actions-docs": {
+      "source": "xixu-me/skills",
+      "sourceType": "github",
+      "computedHash": "e7babb077d50cd88fb8c0e168373c8a560d056b540f364cb4892191bf524f5ee"
+    },
     "notion": {
       "source": "openclaw/openclaw",
       "sourceType": "github",
